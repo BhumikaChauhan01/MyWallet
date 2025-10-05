@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<style>
+  .error-messages {
+    background-color: #fde2e1;
+    border: 1px solid #fca5a5;
+    color: #991b1b;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-size: 14px;
+    text-align: left;
+  }
+  .error-messages ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+  .error-messages li {
+    list-style-type: disc;
+  }
+</style>
+
+<div class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
+  <h1 class="text-2xl font-bold text-center text-[#202a44] mb-6">
+    Login to Your Account
+  </h1>
+
+  <form method="POST" action="">
+    {% csrf_token %}
+
+    <!-- Username -->
+    <div class="mb-4">
+      <label class="block text-gray-700 font-medium mb-2" for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="Enter your username"
+        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3b4c77]" />
+    </div>
+
+    <!-- Password -->
+    <div class="mb-2">
+      <label class="block text-gray-700 font-medium mb-2" for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="••••••••"
+        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3b4c77]" />
+    </div>
+
+   
+
+    <!-- error messages -->
+    {% if form.non_field_errors %}
+    <div class="error-messages">
+      <ul>
+        {% for error in form.non_field_errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <!-- Submit -->
+    <button type="submit"
+      class="w-full bg-[#3b4c77] text-white py-2 px-4 rounded-lg hover:bg-[#202a44] transition duration-200">
+      Sign In
+    </button>
+
+    <!-- Register Link -->
+    <p class="text-sm text-gray-600 mt-4 text-center">
+      Don’t have an account?
+      <a href="{% url 'register' %}" class="text-[#202a44] hover:underline">Register here</a>
+    </p>
+
+     <!-- Forgot Password -->
+    <p class="text-sm text-gray-500 text-center mt-4 ">
+      <a href="{% url 'password_reset' %}"
+         class="font-medium text-[#3b4c77] hover:text-[#202a44] transition duration-150 ease-in-out ">
+        Forgot password?
+      </a>
+    </p>
+  </form>
+</div>
+{% endblock %}

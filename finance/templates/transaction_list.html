@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Transactions{% endblock %}
+
+{% block content %}
+<div class="w-full max-w-5xl mx-auto mt-10 bg-white shadow-xl rounded-2xl overflow-hidden">
+    
+    <!-- Heading -->
+    <h1 class="text-center text-3xl font-bold py-6 text-[#1e3a8a] border-b">
+        💰 Transaction List
+    </h1>
+
+    <!-- Table -->
+    <div class="overflow-x-auto">
+        <table class="w-full border-collapse">
+            <thead class="bg-[#202a44] text-white text-lg">
+                <tr>
+                    <th class="px-6 py-3 text-center">ID</th>
+                    <th class="px-6 py-3 text-center">Date</th>
+                    <th class="px-6 py-3 text-center">Title</th>
+                    <th class="px-6 py-3 text-center">Amount (₹)</th>
+                    <th class="px-6 py-3 text-center">Type</th>
+                </tr>
+            </thead>
+            <tbody class="bg-gray-50 divide-y divide-gray-200 text-center">
+                {% for transaction in transactions %}
+                <tr class="hover:bg-gray-100 transition">
+                    <!-- <td class="px-6 py-4 font-medium">{{ transaction.id }}</td> -->
+                    <td class="px-6 py-4 font-medium">{{ forloop.counter }}</td>
+                    <td class="px-6 py-4">{{ transaction.date }}</td>
+                    <td class="px-6 py-4">{{ transaction.title }}</td>
+                    
+                    <!-- Amount -->
+                    <td class="px-6 py-4 font-bold">
+                        {% if transaction.transaction_type == "Income" %}
+                            + ₹{{ transaction.amount }}
+                        {% else %}
+                            - ₹{{ transaction.amount }}
+                        {% endif %}
+                    </td>
+
+                    <!-- Type Badge -->
+                    <td class="px-6 py-4">
+                        {% if transaction.transaction_type == "Income" %}
+                            <span class="px-3 py-1 rounded-full text-sm font-semibold bg-green-600 text-white">
+                                Credit
+                            </span>
+                        {% else %}
+                            <span class="px-3 py-1 rounded-full text-sm font-semibold bg-red-600 text-white">
+                                Debit
+                            </span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="px-6 py-6 text-gray-500 italic">
+                        No transactions available
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Generate Report Button -->
+    <div class="text-center py-6 border-t">
+        <a href="{% url 'export_transactions' %}" 
+           class="inline-block bg-[#1e3a8a] hover:bg-[#15235a] text-white font-semibold px-6 py-3 rounded-xl shadow-md transition">
+            📊 Generate Report
+        </a>
+    </div>
+</div>
+{% endblock %}

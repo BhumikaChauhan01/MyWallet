@@ -1,0 +1,68 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Add Goal{% endblock %}
+
+{% block content %}
+<div class="w-full max-w-3xl mx-auto bg-white rounded-2xl shadow-xl p-8">
+  
+  <!-- Heading -->
+  <h1 class="text-3xl font-bold text-center text-[#202a44] mb-6">
+    🎯 Set Your Goal
+  </h1>
+
+  <!-- Goal Form -->
+  <form method="POST" action="">
+    {% csrf_token %}
+
+    <!-- Goal Name -->
+    <div class="mb-4">
+      <label for="name" class="block text-gray-700 font-medium mb-2">Goal Name</label>
+      <input id="name" type="text" name="name" placeholder="e.g. Buy a Laptop, Vacation Fund"
+        maxlength="100" required
+        class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#3b4c77]">
+      {% if form.name.errors %}
+        {% for error in form.name.errors %}
+          <p class="text-red-600 text-sm mt-1">{{ error }}</p>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <!-- Target Amount -->
+    <div class="mb-4">
+      <label for="target_amount" class="block text-gray-700 font-medium mb-2">Target Amount (₹)</label>
+      <input id="target_amount" type="number" name="target_amount" placeholder="Enter target amount"
+        step="0.01" min="1" required
+        class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#3b4c77]">
+      {% if form.target_amount.errors %}
+        {% for error in form.target_amount.errors %}
+          <p class="text-red-600 text-sm mt-1">{{ error }}</p>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <!-- Deadline -->
+    <div class="mb-6">
+      <label for="deadline" class="block text-gray-700 font-medium mb-2">Deadline</label>
+      <input id="deadline" type="date" name="deadline" required
+        class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#3b4c77]">
+      {% if form.deadline.errors %}
+        {% for error in form.deadline.errors %}
+          <p class="text-red-600 text-sm mt-1">{{ error }}</p>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <!-- Submit -->
+    <button type="submit"
+        <a href="{% url 'dashboard' %}" 
+            class="block w-full text-center bg-[#3b4c77] text-white py-2 px-4 rounded-lg hover:bg-[#202a44] transition duration-200">
+            Save Goal
+        </a> 
+
+    </button>
+  </form>
+
+</div>
+{% endblock %}
+

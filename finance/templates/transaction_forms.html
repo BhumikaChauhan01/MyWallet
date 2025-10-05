@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}Transactions{% endblock %}
+
+{% block content %}
+<div class="w-full max-w-3xl mx-auto bg-white rounded-2xl shadow-xl p-8">
+  
+  <!-- Heading -->
+  <h1 class="text-3xl font-bold text-center text-[#202a44] mb-6">
+    ➕ Record Your Income / Expense
+  </h1>
+
+  <!-- Transaction Form -->
+  <form method="POST" action="">
+    {% csrf_token %}
+
+    <!-- Title -->
+    <div class="mb-4">
+      <label for="title" class="block text-gray-700 font-medium mb-2">Title</label>
+      <input id="title" type="text" name="title" placeholder="e.g. Salary, Groceries"
+        maxlength="50" required
+        class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#3b4c77]">
+      {% if form.title.errors %}
+        {% for error in form.title.errors %}
+          <p class="text-red-600 text-sm mt-1">{{ error }}</p>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <!-- Amount -->
+    <div class="mb-4">
+      <label for="amount" class="block text-gray-700 font-medium mb-2">Amount (₹)</label>
+      <input id="amount" type="number" name="amount" placeholder="Enter amount"
+        min="1" required
+        class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#3b4c77]">
+      {% if form.amount.errors %}
+        {% for error in form.amount.errors %}
+          <p class="text-red-600 text-sm mt-1">{{ error }}</p>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <!-- Transaction Type -->
+    <div class="mb-4">
+      <label for="transaction_type" class="block text-gray-700 font-medium mb-2">Transaction Type</label>
+      <select id="transaction_type" name="transaction_type" required
+        class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#3b4c77]">
+        <option value="">-- Select --</option>
+        <option value="Income">Income</option>
+        <option value="Expense">Expense</option>
+      </select>
+      {% if form.type.errors %}
+        {% for error in form.type.errors %}
+          <p class="text-red-600 text-sm mt-1">{{ error }}</p>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <!-- Date -->
+    <div class="mb-4">
+      <label for="date" class="block text-gray-700 font-medium mb-2">Date</label>
+      <input id="date" type="date" name="date" required
+        class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#3b4c77]">
+      {% if form.date.errors %}
+        {% for error in form.date.errors %}
+          <p class="text-red-600 text-sm mt-1">{{ error }}</p>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <!-- Category -->
+    <div class="mb-6">
+      <label for="category" class="block text-gray-700 font-medium mb-2">Category</label>
+      <select id="category" name="category" required
+        class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#3b4c77]">
+        <option value="">-- Select --</option>
+        <option value="food">Food</option>
+        <option value="shopping">Shopping</option>
+        <option value="travel">Travel</option>
+        <option value="bills">Bills</option>
+        <option value="other">Other</option>
+      </select>
+      {% if form.category.errors %}
+        {% for error in form.category.errors %}
+          <p class="text-red-600 text-sm mt-1">{{ error }}</p>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <!-- Submit -->
+    <button type="submit"
+      class="w-full bg-[#3b4c77] text-white py-2 px-4 rounded-lg hover:bg-[#202a44] transition duration-200">
+      Save Transaction
+    </button>
+  </form>
+
+</div>
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="w-full max-w-6xl mx-auto mt-10 p-6">
+
+  <!-- Welcome Section -->
+  <div class="text-center mb-10">
+    <h1 class="text-4xl font-bold text-[#1e3a8a]">
+      👋 Welcome, {{ request.user|capfirst }}
+    </h1>
+    <p class="text-gray-600 italic mt-2">
+      "Wealth is not about having a lot of money, it’s about having a lot of options."
+    </p>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+
+    <!-- Total Income -->
+    <div class="bg-green-100 rounded-2xl shadow-lg p-6 text-center border border-green-300">
+      <h2 class="text-lg font-semibold text-green-800">Total Income</h2>
+      <p class="text-3xl font-bold text-green-900 mt-2">₹{{ total_income }}</p>
+    </div>
+
+    <!-- Total Expense -->
+    <div class="bg-red-100 rounded-2xl shadow-lg p-6 text-center border border-red-300">
+      <h2 class="text-lg font-semibold text-red-800">Total Expense</h2>
+      <p class="text-3xl font-bold text-red-900 mt-2">₹{{ total_expense }}</p>
+    </div>
+
+    <!-- Net Savings -->
+    <div class="bg-blue-100 rounded-2xl shadow-lg p-6 text-center border border-blue-300">
+      <h2 class="text-lg font-semibold text-blue-800">Net Savings</h2>
+      <p class="text-3xl font-bold text-blue-900 mt-2">₹{{ net_saving }}</p>
+    </div>
+  </div>
+
+    <!-- Goals Section -->
+  <div class="bg-white rounded-2xl shadow-xl p-6 mb-10">
+    <h2 class="text-2xl font-bold text-[#1e3a8a] mb-6">🎯 Your Goals</h2>
+
+    {% if goal_progress %}
+      <ul class="space-y-6">
+        {% for item in goal_progress %}
+          <li class="p-4 border rounded-xl shadow-sm hover:shadow-md transition">
+            <div class="flex justify-between items-center mb-2">
+              <div>
+                <p class="font-semibold text-lg text-gray-800">{{ item.goal.name }}</p>
+                <p class="text-sm text-gray-600">Target: ₹{{ item.goal.target_amount|floatformat:2 }}</p>
+                <p class="text-sm text-gray-600">Deadline: {{ item.goal.deadline }}</p>
+              </div>
+              <p class="text-xl font-bold text-indigo-600">{{ item.progress|floatformat:1 }}%</p>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-gray-200 rounded-full h-3">
+              <div class="bg-indigo-500 h-3 rounded-full transition-all duration-300"
+                   style="width: {{ item.progress }}%">
+              </div>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-gray-500 italic">No goals added yet. Start by creating one!</p>
+    {% endif %}
+  </div>
+
+  <!-- Recent Transactions -->
+  <div class="bg-white rounded-2xl shadow-xl p-6">
+    <h2 class="text-2xl font-bold text-[#1e3a8a] mb-4">📊 Recent Transactions</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full border-collapse">
+        <thead>
+          <tr class="bg-[#1e3a8a] text-white">
+            <th class="py-3 px-4 text-left">Title</th>
+            <th class="py-3 px-4 text-left">Type</th>
+            <th class="py-3 px-4 text-left">Amount</th>
+            <th class="py-3 px-4 text-left">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for t in transactions %}
+          <tr class="border-b hover:bg-gray-50">
+            <td class="py-3 px-4">{{ t.title }}</td>
+            <td class="py-3 px-4">
+              {% if t.transaction_type == "Income" %}
+                <span class="text-green-700 font-medium">Income</span>
+              {% else %}
+                <span class="text-red-700 font-medium">Expense</span>
+              {% endif %}
+            </td>
+            <td class="py-3 px-4">₹{{ t.amount }}</td>
+            <td class="py-3 px-4">{{ t.date }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4" class="py-4 text-center text-gray-500">No transactions yet.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
